@@ -170,14 +170,14 @@ task_manager/
 
 ## 🎥 Video Demo
 
-[Add your YouTube video link here]
+[https://youtu.be/FxJAEbXYJbg]
 
 ---
 
 ## 👤 Author
 
-* Name: [Your Name]
-* GitHub: [Your GitHub Username]
+* Name: Mortaza
+* GitHub: mortazap53
 
 ---
 
