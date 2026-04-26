@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+
+<div class="container mt-4">
+
+    <!-- DATE FILTER -->
+    <form method="get" action="/" class="mb-3">
+        <input type="date" name="date" value="{{ date }}" class="form-control w-25 d-inline">
+        <button type="submit" class="btn btn-primary">View Day</button>
+    </form>
+
+    <h3 class="mb-3">Tasks for {{ date }}</h3>
+
+    <!-- ADD TASK FORM -->
+    <div class="card p-3 mb-4 shadow-sm">
+        <form action="/add" method="post">
+
+            <input type="text" name="task" class="form-control mb-2" placeholder="Task" required>
+
+            <input type="date" name="date" class="form-control mb-2" required>
+
+            <input type="time" name="time" class="form-control mb-2" required>
+
+            <button class="btn btn-success">Add Task</button>
+
+        </form>
+    </div>
+
+    <!-- TASK LIST -->
+    <ul class="list-group">
+
+        {% for task in tasks %}
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                <!-- TASK TEXT + TIME -->
+                <div>
+
+                    {% if task.status == "done" %}
+                        <s>{{ task.task }} — until {{ task.time }}</s>
+
+                    {% elif task.status == "overdue" %}
+                        <span class="text-danger fw-bold">
+                            {{ task.task }} — until {{ task.time }} (OVERDUE)
+                        </span>
+
+                    {% else %}
+                        <span>
+                            {{ task.task }} — until {{ task.time }}
+                        </span>
+                    {% endif %}
+
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div>
+
+                    {% if task.status != "done" %}
+                        <a href="/complete/{{ task.id }}" class="btn btn-success btn-sm">Done</a>
+                    {% endif %}
+
+                    <a href="/delete/{{ task.id }}" class="btn btn-danger btn-sm">X</a>
+
+                </div>
+
+            </li>
+
+        {% endfor %}
+
+        <!-- FIX 5: EMPTY STATE -->
+        {% if tasks|length == 0 %}
+            <li class="list-group-item text-center text-muted">
+                No tasks for this day
+            </li>
+        {% endif %}
+
+    </ul>
+
+</div>
+
+{% endblock %}
