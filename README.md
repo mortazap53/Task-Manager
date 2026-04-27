@@ -170,7 +170,7 @@ task_manager/
 
 ## 🎥 Video Demo
 
-[https://youtu.be/FxJAEbXYJbg]
+[https://youtu.be/gWzTSiR_lNM]
 
 ---
 
