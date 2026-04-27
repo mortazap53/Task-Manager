@@ -1,186 +1,112 @@
 # Task Manager (CS50 Final Project)
 
-## 📌 Overview
+## Overview
 
-Task Manager is a web-based application that allows users to manage their daily tasks efficiently by assigning each task a specific date and time. The application is designed to help users stay organized, track progress, and meet deadlines.
+This project is a web-based Task Manager built as my final project for CS50. The main idea behind this application is to help users organize their daily tasks in a more structured way by assigning both a date and a specific time (deadline) to each task.
 
-Unlike a simple to-do list, this project introduces time-based logic, where tasks are dynamically evaluated and marked as overdue if they are not completed before their deadline.
+At the beginning, I wanted to build a simple to-do list, but I realized that most basic task apps do not handle time properly. So instead of just storing tasks, I decided to build a system that can understand deadlines and react to them. Because of this, the application is able to automatically detect when a task becomes overdue, which makes it more practical and closer to real-world usage.
 
----
-
-## 🚀 Features
-
-### ✅ User Authentication
-
-* Users can register and log in securely.
-* Each user has access only to their own tasks.
-
-### 📝 Task Management
-
-* Add tasks with:
-
-  * Task description
-  * Date
-  * Time (deadline)
-* Delete tasks
-* Mark tasks as completed
-
-### 📅 Date-Based Filtering
-
-* Users can select a specific date to view tasks for that day.
-* The interface updates dynamically based on the selected date.
-
-### ⏰ Deadline & Overdue Detection
-
-* Each task has a deadline (date + time).
-* The system automatically compares the current time with the task’s deadline.
-* If a task is not completed before its deadline, it is marked as:
-
-  * **Overdue** (highlighted visually)
-
-### 🎯 Status System
-
-Tasks are displayed with three states:
-
-* **Pending** – Task is not completed and still within deadline
-* **Done** – Task completed by user
-* **Overdue** – Deadline passed and task not completed
-
-### 🎨 User Interface
-
-* Built with Bootstrap for clean and responsive design
-* Tasks are clearly displayed with:
-
-  * Deadline time (“until HH:MM”)
-  * Status indicators (Done / Overdue / Pending)
-* Handles empty states (e.g., no tasks for selected date)
+The application is user-based, meaning each user must register and log in, and they only see their own tasks. This was an important design decision to make the system more realistic and secure.
 
 ---
 
-## 🧠 Technical Design
+## Features
 
-This project follows a simple but effective architecture:
+The application supports all the essential features needed for managing tasks:
 
-### Backend
+Users can register and log in securely. After logging in, they can add tasks by providing a description, a date, and a time. Tasks are stored in a database and displayed on the main page.
 
-* Built using Flask (Python)
-* Handles:
+One feature I focused on is date filtering. Users can select a specific day and view only the tasks for that day. This makes the interface cleaner and more useful compared to showing everything at once.
 
-  * Routing
-  * Form processing
-  * Business logic (e.g., overdue detection)
+Another important feature is the deadline system. Each task has a time, and the application compares it with the current time. If the time has passed and the task is not completed, it is automatically marked as overdue. This logic happens dynamically when the page loads.
 
-### Database
-
-* SQLite database (`tasks.db`)
-* Stores:
-
-  * Task description
-  * Date
-  * Time
-  * Status
-  * User ID
-
-### Frontend
-
-* HTML templates with Jinja (Flask templating)
-* Bootstrap for styling
+Users can also mark tasks as completed or delete them. Completed tasks are visually different from pending ones, which helps users quickly understand their progress.
 
 ---
 
-## ⚙️ How It Works
+## File Structure and Explanation
 
-1. A user logs into the system.
-2. The user adds a task with a date and time.
-3. The task is stored in the database.
-4. When the page loads:
+The project is organized into a few main files and folders:
 
-   * The backend retrieves tasks for the selected date.
-   * Python compares each task’s deadline with the current time.
-   * If the deadline has passed and the task is not completed:
+### app.py
 
-     * It is marked as **overdue** dynamically.
-5. The frontend displays tasks with proper formatting and status.
+This is the core of the application. It is built using Flask and contains all the routes and logic. It handles user authentication (login and registration), adding tasks, deleting tasks, marking tasks as completed, and filtering tasks by date.
+
+It also includes the main logic for detecting overdue tasks. Instead of storing overdue status in the database, the application calculates it every time the page is loaded by comparing the task’s date and time with the current time.
 
 ---
 
-## ▶️ How to Run the Project
+### helpers.py
 
-1. Open the project in VS Code
-
-2. Open the terminal in the project directory
-
-3. Run the Flask application:
-
-```bash
-python -m flask run
-```
-
-4. Open your browser and go to:
-
-```
-http://127.0.0.1:5000
-```
+This file contains helper functions used across the application. For example, it includes the `login_required` function to restrict access to certain routes unless the user is logged in. This keeps the main code in `app.py` cleaner and more organized.
 
 ---
 
-## 📂 Project Structure
+### templates/
 
-```
-task_manager/
-│
-├── app.py              # Main Flask application
-├── tasks.db           # SQLite database
-├── helpers.py         # Helper functions (login, etc.)
-├── templates/
-│   ├── layout.html
-│   ├── index.html
-│   ├── login.html
-│   └── register.html
-└── README.md
-```
+This folder contains all the HTML files used for the frontend.
+
+- `layout.html` is the base template that includes the general structure like navigation and styling.
+- `index.html` is the main page where tasks are displayed, added, and managed.
+- `login.html` and `register.html` handle user authentication.
+
+These templates use Jinja to connect the backend data with the frontend display.
 
 ---
 
-## 💡 Design Decisions
+### tasks.db
 
-* **Dynamic Overdue Calculation**
-  Overdue status is not stored in the database. Instead, it is calculated in real time using Python. This ensures accuracy and avoids unnecessary database updates.
-
-* **Separation of Concerns**
-
-  * Database → storage
-  * Flask → logic
-  * HTML → display
-
-* **Simplicity & Usability**
-  The interface is kept minimal and focused on functionality rather than complexity.
+This is the SQLite database used to store all the data. It includes information such as task description, date, time, status, and user ID.
 
 ---
 
-## 🔮 Future Improvements
+## Technical Design
 
-* Calendar view (weekly/monthly)
-* Task editing feature
-* Countdown timer (“time remaining”)
-* Notifications or reminders
-* User profile and statistics
+The application follows a simple structure with clear separation of responsibilities.
 
----
+Flask handles the backend logic, including routing and processing user input. SQLite is used as the database because it is lightweight and easy to integrate. The frontend is built using HTML and Bootstrap to create a clean and responsive interface.
 
-## 🎥 Video Demo
+One important design decision was not to store the “overdue” status in the database. Instead, it is calculated dynamically. I chose this approach because it ensures that the status is always accurate and avoids unnecessary updates to the database.
 
-[https://youtu.be/gWzTSiR_lNM]
+Another decision was to keep the interface simple. Instead of adding too many features, I focused on making the existing features work correctly and reliably.
 
 ---
 
-## 👤 Author
+## How It Works
 
-* Name: Mortaza
-* GitHub: mortazap53
+When a user logs in, the application retrieves tasks for the selected date. If no date is selected, it defaults to the current day.
+
+Each task includes a date and time. The application combines these and compares them with the current system time. If the deadline has passed and the task is not marked as completed, it is treated as overdue and displayed differently on the page.
+
+All user actions, such as adding or deleting tasks, are handled through Flask routes and reflected immediately in the interface.
 
 ---
 
-## 📄 License
+## Challenges and Improvements
 
-This project was developed as part of the CS50 course.
+One of the main challenges was handling time correctly. At first, I considered storing the overdue status in the database, but I realized this could become inconsistent. Calculating it dynamically was a better solution, even though it required more careful logic.
+
+Another challenge was organizing the structure of the project. Separating logic, templates, and helper functions helped make the code more readable and maintainable.
+
+If I had more time, I would improve the project by adding features such as editing tasks, a calendar view, and notifications. A countdown timer showing how much time is left for each task would also make the application more interactive.
+
+---
+
+## Video Demo
+
+https://youtu.be/gWzTSiR_lNM
+
+---
+
+## Author
+
+Mortaza  
+GitHub: mortazap53
+
+---
+
+## Final Thoughts
+
+This project helped me understand how different parts of a web application work together, including backend logic, databases, and frontend design. It also gave me practical experience in solving real problems, such as handling time and managing user-specific data.
+
+Overall, this project reflects what I learned in CS50 and how I applied it to build something functional and meaningful.
